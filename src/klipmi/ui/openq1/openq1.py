@@ -42,6 +42,15 @@ class OpenQ1UI(BaseUi):
                 "total_duration",
                 "info",
             ],
+
+            # Fans
+            "fan_generic cooling_fan": ["speed"],           # Part cooling
+            "fan_generic auxiliary_cooling_fan": ["speed"], # Auxiliary cooling
+            "heater_fan hotend_fan": ["speed"],             # Hotend fan
+            "heater_fan chamber_fan": ["speed"],            # Chamber fan
+
+
+
         }
 
     def onNotReady(self):

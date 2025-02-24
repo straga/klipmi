@@ -37,15 +37,22 @@ class Klipmi:
             handlers=[logging.StreamHandler()],
         )
 
+        # Initialize state
         self.state: KlipmiState = KlipmiState()
         self.state.options = Config()
+
+        # Initializing the display
         self.state.display = TJC(
             self.state.options.klipmi.device,
             self.state.options.klipmi.baud,
             self.onDisplayEvent,
         )
         self.state.display.encoding = "utf-8"
+
+        # Initialize UI
         self.ui: BaseUi = ui.implementations[self.state.options.klipmi.ui](self.state)
+
+        # Initializing the printer
         self.state.printer = Printer(
             self.state.options.moonraker,
             self.onConnectionEvent,
@@ -74,9 +81,15 @@ class Klipmi:
             self.ui.onKlipperError()
 
     async def init(self):
+
+        # Connecting the display
         await self.state.display.connect()
         await self.state.display.wakeup()
+        
+        # Initialize UI
         self.ui.onNotReady()
+
+        # Connecting the printer
         await self.state.printer.connect()
 
     def start(self):

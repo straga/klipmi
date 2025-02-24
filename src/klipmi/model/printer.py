@@ -180,6 +180,29 @@ class Printer(MoonrakerListener):
             self.client.call_method("printer.gcode.script", script=gcode)
         )
 
+    def run_macro(self, macro_name: str, **params):
+        """
+        Executes a Klipper macro with the specified name and parameters
+
+        # Example of calling a macro without parameters
+        printer.run_macro("START_PRINT")
+
+        # Example of calling a macro with parameters
+        printer.run_macro("SET_TEMP", EXTRUDER=200, BED=60)
+        
+        # Direct macro execution via G-code
+        printer.runGcode("START_PRINT")
+
+        Parameters:
+        macro_name (str): Name of the macro
+        **params: Additional macro parameters
+        """
+        # String representation of parameters
+        params_str = " ".join([f"{k}={v}" for k, v in params.items()])
+        macro_cmd = f"{macro_name} {params_str}".strip()
+        self.runGcode(macro_cmd)
+
+
     def emergencyStop(self):
         asyncio.create_task(self.client.call_method("printer.emergency_stop"))
 
@@ -204,7 +227,15 @@ class Printer(MoonrakerListener):
         asyncio.create_task(self.client.call_method("printer.print.cancel"))
 
     def togglePin(self, pin: str):
-        self.runGcode(
-            "SET_PIN PIN=%s VALUE=%d"
-            % (pin, 1 - self.status["output_pin %s" % pin]["value"])
-        )
+
+        """Toggle a pin between 0 and 1"""
+        pin_status = self.status.get(f"output_pin {pin}", {"value": 0})
+        new_value = 1 - pin_status["value"]  # Toggle between 0 and 1
+        
+        # Send gcode to set new value
+        self.run_macro("SET_PIN", PIN=pin, VALUE=new_value)
+
+        # self.runGcode(
+        #     "SET_PIN PIN=%s VALUE=%d"
+        #     % (pin, 1 - self.status["output_pin %s" % pin]["value"])
+        # )
