@@ -410,7 +410,7 @@ class PrintingPage(OpenQ1Page):
                 self.state.return_page = self.__class__  # Store current page class
                 self.changePage(KeypadPage)
                 
-            elif data.component_id == 22:  # Стоbed
+            elif data.component_id == 22:  # bed
                 self.state.heater_manager.set_heater_data("bed")
                 self.state.return_page = self.__class__  # Store current page class
                 self.changePage(KeypadPage)

@@ -28,12 +28,11 @@ For QIDI Q1 pro with OpenQ1 https://github.com/frap129/OpenQ1.
 
 ## Screenshots
 
-<img src="doc/printing.png" alt="Printing Interface Screenshot" width="600"/>
 
 ### Interface Views
 | Print Status | Temperature Control |
 |:------------:|:------------------:|
-| <img src="doc/printing.png" width="300"/> | <img src="doc/temperature.png" width="300"/> |
+| <img src="doc/printing.png" width="300"/> | <img src="doc/temperature.png" width="240"/> |
 
 
 ## Eddy config:
